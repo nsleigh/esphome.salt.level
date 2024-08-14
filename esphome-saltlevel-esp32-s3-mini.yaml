@@ -57,7 +57,7 @@ web_server:
 # Configuration entry for ESP32
 i2c:
   sda: GPIO2
-  scl: GPIO1
+  scl: GPIO3
   scan: true
   id: bus_a
 
@@ -74,7 +74,7 @@ sensor:
     name: "Left distance"
     id: distance1
     address: 0x41
-    enable_pin: GPIO3
+    enable_pin: GPIO4
     timeout: 200us
     update_interval: 1000ms
     unit_of_measurement: "m"
@@ -91,7 +91,7 @@ sensor:
     name: "Right distance"
     id: distance2
     address: 0x42
-    enable_pin: GPIO4
+    enable_pin: GPIO1
     timeout: 200us
     update_interval: 1000ms
     unit_of_measurement: "m"
