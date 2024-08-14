@@ -3,6 +3,7 @@ substitutions:
   friendly_name: ESPHome Salt level 6d5ab8
 
 esphome:
+  comment: ESP Salt level
   name: ${name}
   friendly_name: ${friendly_name}
   min_version: 2024.6.0
