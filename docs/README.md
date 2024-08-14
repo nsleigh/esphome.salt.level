@@ -32,7 +32,7 @@ Inspired by 'Water Softener Salt Level Monitor' https://www.instructables.com/Wa
 
 # ESP32-S3 Mini
 
-![image](ESP32-S3 Mini.png)
+![image](ESP32-S3-Mini.png)
 
 | ESP32-S3 Mini Pin | Name    | VL53L0X Left | VL53L0X Right |
 | --------- | ------- | ------------ | ------------- |
