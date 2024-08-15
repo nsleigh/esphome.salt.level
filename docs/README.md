@@ -1,5 +1,4 @@
-# esphome.salt.level
-ESPHome Water softener blocksalt level detector.
+# ESPHome Water softener blocksalt level detector (esphome.salt.level)
 
 Inspired by 'Water Softener Salt Level Monitor' https://www.instructables.com/Water-Softener-Salt-Level-Monitor/.
 
