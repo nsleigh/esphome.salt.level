@@ -2,11 +2,19 @@
 
 Inspired by 'Water Softener Salt Level Monitor' https://www.instructables.com/Water-Softener-Salt-Level-Monitor/.
 
+This is deigned to work with the Kinetico Water Softeners that work with salt blocks, in particular the model I have has a clear cover so the salt level can be measured without modifying the cover.
+
+![image](IMG_2202.png)
+
+DUBEUYEW VL53L0X Time-of-Flight Distance Sensor Flight Measurement ToF Laser Range Finder 940nm Laser Detect Module for Arduino
+https://www.amazon.co.uk/dp/B0BXKD5Z4H
 
 ![image](VL53L0X.png)
 
-![image](circuit.png)
+## ESPHome
+https://esphome.io/components/sensor/vl53l0x.html
 
+![image](circuit.png)
 
 # ESP32 WROOM
 
@@ -30,6 +38,8 @@ Inspired by 'Water Softener Salt Level Monitor' https://www.instructables.com/Wa
 | 30        | GPIO18  |              | XSHUT         |
 
 # ESP32-S3 Mini
+Waveshare ESP32-S3 Mini Development Board
+https://www.amazon.co.uk/dp/B0CHYHGYRH
 
 ![image](ESP32-S3-Mini.png)
 
@@ -51,3 +61,8 @@ Inspired by 'Water Softener Salt Level Monitor' https://www.instructables.com/Wa
 | 5         | GPIO21  |              | SDA           |
 |           | -       |              | GPIO1         |
 | 4         | GPIO18  |              | XSHUT         |
+
+## Circuit board
+
+![image](IMG_0212.png)
+![image](IMG_0213.png)
