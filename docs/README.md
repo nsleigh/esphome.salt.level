@@ -1,22 +1,25 @@
-# ESPHome Water softener blocksalt level detector (esphome.salt.level)
+# ESPHome Water softener blocksalt level detector
 
-Inspired by 'Water Softener Salt Level Monitor' https://www.instructables.com/Water-Softener-Salt-Level-Monitor/.
+Inspired by 'Water Softener Salt Level Monitor' <https://www.instructables.com/Water-Softener-Salt-Level-Monitor/>.
 
 This is deigned to work with the Kinetico Water Softeners that work with salt blocks, in particular the model I have has a clear cover so the salt level can be measured without modifying the cover.
 
-![image](IMG_2202.png)
+![water-softener](IMG_2202.png)
 
 DUBEUYEW VL53L0X Time-of-Flight Distance Sensor Flight Measurement ToF Laser Range Finder 940nm Laser Detect Module for Arduino
-https://www.amazon.co.uk/dp/B0BXKD5Z4H
+<https://www.amazon.co.uk/dp/B0BXKD5Z4H>
 
-![image](VL53L0X.png)
+![VL53L0X](VL53L0X.png)
 
-## ESPHome
-https://esphome.io/components/sensor/vl53l0x.html
+## ESPHome Solution
 
-![image](circuit.png)
+Solution was to use a time-of-flight sensor above each salt block and link that to ESPHome running on Home Assistant.
 
-# ESP32 WROOM
+<https://esphome.io/components/sensor/vl53l0x.html>
+
+### Prototype ESP32 WROOM
+
+![circuit](circuit.png)
 
 | ESP32 Pin | Name    | VL53L0X Left | VL53L0X Right |
 | --------- | ------- | ------------ | ------------- |
@@ -37,11 +40,14 @@ https://esphome.io/components/sensor/vl53l0x.html
 |           | -       |              | GPIO1         |
 | 30        | GPIO18  |              | XSHUT         |
 
-# ESP32-S3 Mini
-Waveshare ESP32-S3 Mini Development Board
-https://www.amazon.co.uk/dp/B0CHYHGYRH
+## Final Solution - ESP32-S3 Mini
 
-![image](ESP32-S3-Mini.png)
+Waveshare ESP32-S3 Mini Development Board
+<https://www.amazon.co.uk/dp/B0CHYHGYRH>
+
+![esp32-s3-mini-circuit](esp32-s3-mini-circuit.png)
+
+![esp32-s3-min](ESP32-S3-Mini.png)
 
 | ESP32-S3 Mini Pin | Name    | VL53L0X Left | VL53L0X Right |
 | --------- | ------- | ------------ | ------------- |
@@ -62,7 +68,7 @@ https://www.amazon.co.uk/dp/B0CHYHGYRH
 |           | -       |              | GPIO1         |
 | 4         | GPIO18  |              | XSHUT         |
 
-## Circuit board
+### Circuit board
 
-![image](IMG_0212.png)
-![image](IMG_0213.png)
+![board-top](IMG_0212.png)
+![board-bottom](IMG_0213.png)
