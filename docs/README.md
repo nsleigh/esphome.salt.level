@@ -4,6 +4,8 @@ Inspired by 'Water Softener Salt Level Monitor' <https://www.instructables.com/W
 
 This is deigned to work with the Kinetico Water Softeners that work with salt blocks, in particular the model I have has a clear cover so the salt level can be measured without modifying the cover.
 
+NOTE: this is still work in progress. Currently testing final version. 
+
 ![water-softener](IMG_2202.png)
 
 DUBEUYEW VL53L0X Time-of-Flight Distance Sensor Flight Measurement ToF Laser Range Finder 940nm Laser Detect Module for Arduino
