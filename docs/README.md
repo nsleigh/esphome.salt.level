@@ -1,5 +1,3 @@
-<meta name="google-site-verification" content="ctcDfcB4vFoBUQsszhZQ8R9dvFjuv5TiDE3wHAlvDW0" />
-
 # ESPHome Water softener blocksalt level detector
 
 Inspired by 'Water Softener Salt Level Monitor' <https://www.instructables.com/Water-Softener-Salt-Level-Monitor/>.
