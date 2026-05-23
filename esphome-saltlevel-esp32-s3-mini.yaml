@@ -1,18 +1,31 @@
 substitutions:
-  name: esphome-web-6d5ab8
+  name: "esphome-saltlevel-6d5ab8"
   friendly_name: ESPHome Salt level 6d5ab8
 
+  update_interval: 60 # the update interval in seconds
+  min_salt: 0.28 # the lowest salt level
+
 esphome:
-  comment: ESP Salt level
   name: ${name}
   friendly_name: ${friendly_name}
+  comment: ESP Salt level detector
   min_version: 2024.6.0
   name_add_mac_suffix: false
   platformio_options:
     board_build.flash_mode: dio
   project:
     name: esphome.saltlevel
-    version: 0.0.1
+    version: 0.0.2
+  on_boot:
+    priority: 800  # Optional: Ensures it runs after most components init (default is 600)
+    then:
+        - delay: 5s  # Wait for underlying sensors (e.g., distance_left and distance1) to initialize
+        - lambda: |-
+            // Forces immediate calculation and publish for both on boot/restart
+            id(distance1).update();
+            id(distance2).update();
+            id(left_remaining).update();
+            id(right_remaining).update();
 
 esp32:
   board: esp32-s3-devkitc-1
@@ -51,73 +64,109 @@ dashboard_import:
 esp32_improv:
   authorizer: none
 
-# To have a "next url" for improv serial
-web_server:
-
 # Configuration entry for ESP32
 i2c:
   sda: GPIO2
   scl: GPIO3
-  scan: true
-  id: bus_a
+  scan: false  # Set to true only for debugging addresses
+  # id: bus_a
 
 sensor:
   # Reports the WiFi signal strength/RSSI in dB
   - platform: wifi_signal
-    name: "WiFi Stength"
+    name: "WiFi Strength"
     id: wifi_strength
     update_interval: 60s
     entity_category: "diagnostic"
 
   # Muliple VL53L0X sensors on same i2c bus
   - platform: vl53l0x
-    name: "Left distance"
+    name: "Right distance"
     id: distance1
     address: 0x41
     enable_pin: GPIO4
-    timeout: 200us
-    update_interval: 1000ms
+    long_range: false
+    timeout: 300us
+    update_interval: ${update_interval}s
     unit_of_measurement: "m"
     filters:
       - calibrate_linear:
-         method: least_squares
-         datapoints:
-          # Map from sensor true value
-          - 0.12 -> 0.10
-          - 0.32 -> 0.30
-          - 0.43 -> 0.40
-          - 0.50 -> 0.50
+          method: least_squares
+          datapoints:
+            # Map from sensor reading to true value
+            - 0.045 -> 0.000
+            - 0.100 -> 0.047
+            - 0.200 -> 0.132
+            - 0.300 -> 0.217
+            - 0.400 -> 0.302
+            - 0.450 -> 0.345
+            - 0.500 -> 0.387
   - platform: vl53l0x
-    name: "Right distance"
+    name: "Left distance"
     id: distance2
     address: 0x42
     enable_pin: GPIO1
-    timeout: 200us
-    update_interval: 1000ms
+    long_range: false
+    timeout: 300us
+    update_interval: ${update_interval}s
     unit_of_measurement: "m"
     filters:
       - calibrate_linear:
-         method: least_squares
-         datapoints:
-          # Map from sensor true value
-          - 0.12 -> 0.10
-          - 0.32 -> 0.30
-          - 0.43 -> 0.40
-          - 0.50 -> 0.50
+          method: least_squares
+          datapoints:
+            # Map from sensor reading to true value
+            - 0.045 -> 0.000
+            - 0.100 -> 0.037
+            - 0.200 -> 0.112
+            - 0.300 -> 0.187
+            - 0.400 -> 0.262
+            - 0.450 -> 0.300
+            - 0.500 -> 0.337
+
+  # Convert salt level to percent remaining (clamped 0-100 for safety)
+  - platform: template
+    name: "Right remaining"
+    id: right_remaining
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    icon: mdi:percent
+    lambda: |-
+      auto raw = ($min_salt - id(distance1).state) / $min_salt * 100;
+      return std::clamp(raw, 0.0, 100.0);  // Clamp to valid range, prevents NaN/negative
+    update_interval: ${update_interval}s
+    filters:
+      - sliding_window_moving_average:
+          window_size: 10  # Averages last 10 readings (~10 min window at 60s interval)
+          send_every: 5    # Send updates every 5 new readings (~5 min)
+  - platform: template
+    name: "Left remaining"
+    id: left_remaining
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    icon: mdi:percent
+    lambda: |-
+      auto raw = ($min_salt - id(distance2).state) / $min_salt * 100;
+      return std::clamp(raw, 0.0, 100.0);  // Clamp to valid range, prevents NaN/negative
+    update_interval: ${update_interval}s
+    filters:
+      - sliding_window_moving_average:
+          window_size: 10  # Averages last 10 readings (~10 min window at 60s interval)
+          send_every: 5    # Send updates every 5 new readings (~5 min)
 
 text_sensor:
-    # Diagnostic wifi parameters
+  # Diagnostic wifi parameters
   - platform: wifi_info
     ip_address:
       name: IP Address
-      address_0:
-        name: IP Address
     ssid:
       name: Wifi SSID
     bssid:
       name: Wifi BSSID
 
-# deep_sleep:
-#   run_duration: 30s
-#   sleep_duration: 30s # 10min
+button:
+  - platform: restart
+    name: ESP Reboot
 
+# deep_sleep:
+#   run_duration: 70s  # Suggested: Enough for one update + overhead
+#   sleep_duration: 3540s  # ~59min total cycle for ~1hr effective interval
